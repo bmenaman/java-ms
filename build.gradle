@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'info.solidsoft.pitest' version '1.15.0'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.google.cloud.tools.jib' version '3.4.1'
+}
+
+group = 'com.bmenaman'
+version = '0.1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.kafka:spring-kafka'
+    
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.51'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.51'
+    
+    // Logging
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.23.0'
+    
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// PITest configuration
+pitest {
+    junit5PluginVersion = '1.2.1'
+    targetClasses = ['com.bmenaman.app.*']
+    threads = 4
+    outputFormats = ['HTML']
+    timestampedReports = false
+}
+
+// Spotless configuration
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}
+
+// Jib configuration for container builds
+jib {
+    from {
+        image = 'eclipse-temurin:21-jre-alpine'
+    }
+    to {
+        image = 'bmenaman-ms'
+        tags = ['latest', version]
+    }
+    container {
+        jvmFlags = ['-Xms512m', '-Xmx512m']
+        ports = ['8080']
+    }
+} 
