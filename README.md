@@ -1,5 +1,7 @@
 # Java Microservice with Kafka Integration
 
+TODO: git add Code is almost entirely written by AI.  Needs review, especially the DI and kafka configuration.
+
 A Spring Boot microservice that processes numbers via Kafka and maintains a running total.
 
 ## Prerequisites

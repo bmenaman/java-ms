@@ -38,10 +38,40 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    
+    // Cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.15.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.15.0'
+    testImplementation 'io.cucumber:cucumber-spring:7.15.0'
+    testImplementation 'org.junit.platform:junit-platform-suite:1.10.2'
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            mainClass = 'io.cucumber.core.cli.Main'
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                '--plugin', 'pretty',
+                '--plugin', 'html:build/reports/cucumber/report.html',
+                '--glue', 'com.bmenaman.app.cucumber',
+                'src/test/resources/features'
+            ]
+        }
+    }
 }
 
 test {
     useJUnitPlatform()
+    systemProperty('cucumber.junit-platform.naming-strategy', 'long')
+    systemProperty('cucumber.plugin', 'pretty')
 }
 
 // PITest configuration
