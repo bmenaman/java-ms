@@ -66,6 +66,12 @@ spotless {
 jib {
     from {
         image = 'eclipse-temurin:21-jre-alpine'
+        platforms {
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
     }
     to {
         image = 'bmenaman-ms'
@@ -74,5 +80,14 @@ jib {
     container {
         jvmFlags = ['-Xms512m', '-Xmx512m']
         ports = ['8080']
+        labels = [
+            'maintainer': 'bmenaman',
+            'org.opencontainers.image.description': 'Java Microservice with Kafka Integration'
+        ]
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        format = 'Docker'
+        environment = [
+            'SPRING_OUTPUT_ANSI_ENABLED': 'ALWAYS'
+        ]
     }
 } 
