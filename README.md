@@ -1,4 +1,4 @@
-# Java Microservice with Kafka Integration
+# Example Java Microservice with Kafka Integration
 
 TODO: git add Code is almost entirely written by AI.  Needs review, especially the DI and kafka configuration.
 
@@ -43,12 +43,13 @@ Run tests:
 ./gradlew test
 ```
 
-Run mutation tests:
+Generate mutation test coverage report:
 ```bash
 ./gradlew pitest
 ```
+The mutation test report will be generated in `build/reports/pitest/`.
 
 Format code:
 ```bash
 ./gradlew spotlessApply
-``` 
+```
