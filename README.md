@@ -27,9 +27,6 @@ docker run -d -p 8080:8080 --name bmenaman-ms bmenaman-ms:latest
 ./scripts/health-check.sh
 ```
 
-The script will poll the `/actuator/health` endpoint and exit with:
-- Status code 0 if the endpoint returns `{"status":"UP"}`
-- Status code 1 after 30 retries if the endpoint is not healthy
 
 ## Development
 

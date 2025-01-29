@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Health check script
+# The script will poll the `/actuator/health` endpoint and exit with:
+# - Status code 0 if the endpoint returns `{"status":"UP"}`
+# - Status code 1 after 30 retries if the endpoint is not healthy
 
 # Default values
 HOST=${1:-localhost}
